@@ -36,7 +36,7 @@ const redeemGiftByTeamId = async (data: RedeemGiftByTeamIdRequest) => {
             teamId: team.id,
             redeemedAt: DateTime.now().toMillis()
         },
-        include: {
+        select: {
             team: {
                 select: {
                     name: true

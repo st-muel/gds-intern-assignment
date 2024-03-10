@@ -12,22 +12,21 @@ datasource db {
 
 model Staff {
 	id        String      @id
-	name      String
-	createdAt Int
+	createdAt BigInt
 	teamId    String
 	team	  Team     	  @relation("Teams", fields: [teamId], references: [id])
 }
 
 model Team {
-	id        String      	 @id @default(uuid())
-	name      String
-	members   Staff[]    	 @relation("Teams")
-	redemptions Redemption[] @relation("Redemptions")
+	id        	String      	@id @default(uuid())
+	name      	String			@unique
+	members   	Staff[]    	 	@relation("Teams")
+	redemptions Redemption[] 	@relation("Redemptions")
 }
 
 model Redemption {
-	id        Int      @id @default(autoincrement())
-	teamId    String
-	team	  Team     @relation("Redemptions", fields: [teamId], references: [id])
-	redeemedAt Int
+	id        	Int      @id @default(autoincrement())
+	teamId    	String
+	team	  	Team     @relation("Redemptions", fields: [teamId], references: [id])
+	redeemedAt 	BigInt
 }

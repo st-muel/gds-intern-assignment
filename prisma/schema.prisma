@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+	provider = "prisma-client-js"
+}
+
+datasource db {
+	provider = "sqlite"
+	url      = env("DATABASE_URL")
+}
+
+model Staff {
+	id        String      @id
+	name      String
+}
+
+model StaffTeam {
+	id        Int      @id @default(autoincrement())
+	staffId   String
+	teamId    String
+	createdAt Int
+}
+
+model Team {
+	id        String      @id @default(uuid())
+	name      String
+	redemptions Redemption[] @relation("Redemptions")
+}
+
+model Redemption {
+	id        Int      @id @default(autoincrement())
+	teamId    String
+	team	  Team     @relation("Redemptions", fields: [teamId], references: [id])
+	redeemedAt Int
+}

@@ -3,99 +3,101 @@
 import { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
-import Spinner from "./components/Spinner";
+import { SearchBar } from "./components/SearchBar"
+import { useDebounce } from 'use-debounce';
+import { StaffTable } from "./components/StaffTable";
 
-enum RedemptionStatus {
-	Idle = 'IDLE',
-	Success = 'SUCCESS',
-	Failed = 'FAILED'
-}
+import type { StaffWithTeamAndRedemptions } from "../../types";
+import type { GetStaffBySearchPaginatedResponse } from "./api/staff/route";
+import { Pagination } from "@nextui-org/react";
+
+const PAGE_SIZE = 10;
 
 export default function Home() {
-	const [loading, setLoading] = useState(false);
-	const [staffPassId, setStaffPassId] = useState('');
-	const [redeemStatus, setRedeemStatus] = useState(RedemptionStatus.Idle);
+	const [autoCompleteLoading, setAutoCompleteLoading] = useState(false);
+	const [autoCompleteItems, setAutoCompleteItems] = useState<StaffWithTeamAndRedemptions[]>([]);
 
-	const tryRedeemGift = async () => {
-		if (!staffPassId) return;
+	const [search, setSearch] = useState('');
+	const [debouncedSearch] = useDebounce(search, 200);
 
+	const [totalPages, setTotalPages] = useState(0);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [initialLoad, setInitialLoad] = useState(true);
+	const [staff, setStaff] = useState<StaffWithTeamAndRedemptions[]>([]);
+
+	const getAutoCompleteItems = async () => {
 		try {
-			setLoading(true);
-
-			const res = await axios.post('/api/redeem', {
-				staffId: staffPassId
+			setAutoCompleteLoading(true);
+			const res = await axios.get<GetStaffBySearchPaginatedResponse>('/api/staff', {
+				params: {
+					search: search,
+					page: 0,
+					pageSize: 10 // limit the number of autocomplete items
+				}
 			});
 
-			setRedeemStatus(RedemptionStatus.Success);
-			toast.success(
-				`Gift redeemed successfully for team ${res.data.redemption.team.name}! Merry Christmas!`
-			);
+			setAutoCompleteItems(res.data.result);
 		} catch (error: AxiosError | any) {
-			setRedeemStatus(RedemptionStatus.Failed);
 			toast.error('Error: ' + error.response.data);
 		} finally {
-			setStaffPassId('');
-			setLoading(false);
+			setAutoCompleteLoading(false);
 		}
 	}
 
-	const checkForEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-		if (e.key === 'Enter') {
-			tryRedeemGift();
+	const fetchStaff = async () => {
+		try {
+			const res = await axios.get<GetStaffBySearchPaginatedResponse>('/api/staff', {
+				params: {
+					search: debouncedSearch,
+					page: currentPage - 1,
+					pageSize: PAGE_SIZE
+				}
+			});
+
+			setStaff(res.data.result);
+			setTotalPages(Math.ceil(res.data.total / PAGE_SIZE));
+		} catch (error: AxiosError | any) {
+			toast.error('Error: ' + error.response.data);
+		} finally {
+			setInitialLoad(false);
 		}
 	}
 
 	useEffect(() => {
-		if (redeemStatus != RedemptionStatus.Idle) {
-			setTimeout(() => {
-				setRedeemStatus(RedemptionStatus.Idle);
-			}, 500)
-		}
-	}, [redeemStatus])
+		fetchStaff();
+	}, [currentPage])
 
-	const backgroundColor = 
-		redeemStatus == RedemptionStatus.Idle ? '#51829B' :
-		redeemStatus == RedemptionStatus.Success ? '#B0C5A4' :
-		'#D37676';
+	useEffect(() => {
+		if (debouncedSearch.length > 0) getAutoCompleteItems();
+		else setAutoCompleteItems([]);
+	}, [debouncedSearch])
 			
 	return (
 		<main 
-			className="relative flex flex-col gap-10 h-screen w-screen flex-col items-center justify-center p-12 sm:p-24 transition duration-300 ease-in-out"
-			style={{
-				backgroundColor
-			}}
+			className="bg-[#1A1A1A] relative flex flex-col gap-2 min-h-screen min-w-screen flex-col py-24 px-48 transition duration-300 ease-in-out"
 		>
-			<div className="font-bold text-3xl sm:text-5xl text-center tracking-wider">
-				🎄 Gift Redemption System
+			<div className="font-semibold text-lg tracking-wider">
+				Gift Redemption System
 			</div>
-			<div className="flex flex-col sm:flex-row justify-center gap-2 w-full">
-				<div className="w-full sm:w-3/12">
-					<input 
-						type="text" 
-						placeholder="Staff Pass ID" 
-						className="py-6 px-3 w-full bg-[#F5F5F5] text-gray-700 text-xl rounded-sm h-10"
-						value={staffPassId}
-						onChange={e => setStaffPassId(e.target.value)}
-						onKeyDown={checkForEnter}
+			<div className="flex flex-col justify-center gap-2 w-full">
+				<SearchBar 
+					setSearch={setSearch}
+					items={autoCompleteItems}
+					loading={autoCompleteLoading}
+				/>
+				<StaffTable 
+					items={
+						autoCompleteItems.length == 1 ? autoCompleteItems : staff
+					}
+					fetchStaff={fetchStaff}
+				/>
+				{ !initialLoad && autoCompleteItems.length != 1 && (
+					<Pagination 
+						total={totalPages}
+						page={currentPage}
+						onChange={(page) => setCurrentPage(page)}
 					/>
-				</div>
-				<button 
-					className="
-						flex justify-center items-center 
-						py-6 px-3 w-full sm:w-32 h-10 rounded-sm 
-						text-gray-700 text-md font-medium 
-						transition duration-300 ease-in-out
-						bg-[#F5F5F5] hover:bg-[#9BB0C1] disabled:bg-gray-300 disabled:cursor-not-allowed
-					"
-					onClick={tryRedeemGift}
-					disabled={loading || !staffPassId}
-				>
-					{ loading ? (
-						<Spinner />
-					) : (
-						<div>Redeem 🎁</div>
-					)}
-				</button>
+				)}
 			</div>
 		</main>
 	);

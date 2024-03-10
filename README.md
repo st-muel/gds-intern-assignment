@@ -1,7 +1,7 @@
 > .env file has been commit ONLY FOR ASSIGNMENT PURPOSES. Considered including an .env.example file instead, but would have just been the same as including the .env file just with an extra step. WOULD NEVER DO THIS IN ACTUAL PROJECTS.
 
 ## About The Project
-This project is the take-home assignment for gds-swe-supplyally-govwallet.
+This project is the take-home assignment for gds-swe-supplyally-govwallet. It is also mobile responsive!
 
 ## Built With
 

@@ -28,6 +28,7 @@ pnpm install
 Next, if running locally 
 - Rename `.env.example` to `.env`.
 - Change `provider` from `postgresql` to `sqlite` in `prisma/schema.prisma`
+- Run `pnpm prisma generate`
 
 Then, create and seed the local database. (A [NeonDb][Neon-url] database was used for the deployment)
 ```bash

@@ -5,6 +5,13 @@ import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import Spinner from "./components/Spinner";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "Gift Redemption System",
+	description: "Redeem gifts for your team"
+}
+
 export default function Home() {
 	const [loading, setLoading] = useState(false);
 	const [staffPassId, setStaffPassId] = useState('');

@@ -14,14 +14,13 @@ export default function Home() {
 			setLoading(true);
 
 			const res = await axios.post('/api/redeem', {
-				id: staffPassId
+				staffId: staffPassId
 			});
 			toast.success(
-				`Gift redeemed successfully for team test! Merry Christmas!`
+				`Gift redeemed successfully for team ${res.data.redemption.team.name}! Merry Christmas!`
 			);
 		} catch (error: AxiosError | any) {
-			alert()
-			toast.error(error.response.data.message);
+			toast.error('Error: ' + error.response.data);
 		} finally {
 			setStaffPassId('');
 			setLoading(false);
@@ -52,7 +51,7 @@ export default function Home() {
 						bg-[#F5F5F5] hover:bg-[#9BB0C1] disabled:bg-gray-300 disabled:cursor-not-allowed
 					"
 					onClick={tryRedeemGift}
-					disabled={loading}
+					disabled={loading || !staffPassId}
 				>
 					{ loading ? (
 						<Spinner />

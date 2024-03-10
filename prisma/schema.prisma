@@ -13,18 +13,15 @@ datasource db {
 model Staff {
 	id        String      @id
 	name      String
-}
-
-model StaffTeam {
-	id        Int      @id @default(autoincrement())
-	staffId   String
-	teamId    String
 	createdAt Int
+	teamId    String
+	team	  Team     	  @relation("Teams", fields: [teamId], references: [id])
 }
 
 model Team {
-	id        String      @id @default(uuid())
+	id        String      	 @id @default(uuid())
 	name      String
+	members   Staff[]    	 @relation("Teams")
 	redemptions Redemption[] @relation("Redemptions")
 }
 

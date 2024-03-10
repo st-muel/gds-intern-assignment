@@ -7,7 +7,7 @@ interface GetStaffFromStaffIdRequest {
 
 const getStaffFromStaffId = async (data: GetStaffFromStaffIdRequest) => {
     const { staffId } = data;
-
+    
     const staff = await prisma.staff.findFirst({
         where: {
             id: staffId

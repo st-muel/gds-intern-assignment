@@ -25,7 +25,10 @@ First, install all required dependencies.
 pnpm install
 ```
 
-Next, if running locally, rename `.env.example` to `.env`.
+Next, if running locally 
+- Rename `.env.example` to `.env`.
+- Change `provider` from `postgresql` to `sqlite` in `prisma/schema.prisma`
+
 Then, create and seed the local database. (A [NeonDb][Neon-url] database was used for the deployment)
 ```bash
 pnpm prisma migrate dev

@@ -1,8 +1,12 @@
 import { redemptionService } from "@/app/services/redemptionService";
 import { staffService } from "@/app/services/staffService";
 
+interface RedeemGiftRequestBody {
+    staffId: string;
+}
+
 export async function POST(request: Request) {
-    const { staffId } = await request.json();
+    const { staffId }: RedeemGiftRequestBody = await request.json();
 
     if (!staffId) {
         return new Response('Staff ID is required', { status: 400 });
@@ -11,7 +15,9 @@ export async function POST(request: Request) {
     // Check to make sure this staff exists
     let staff;
     try {
-        staff = await staffService.getStaffFromStaffId({ staffId });
+        staff = await staffService.getStaffFromStaffId({ 
+            staffId: staffId.toUpperCase()
+        });
     } catch (error: any) {
         return new Response(error.message, { status: 404 });
     }

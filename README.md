@@ -19,6 +19,7 @@ This project is the take-home assignment for gds-swe-supplyally-govwallet.
 * [![Neon][Neon]][Neon-url]
 
 ## Getting Started
+> ❗ Only for local deployments, the webpage may encounter an occasional hiccup during its initial compilation. If you find it stuck loading, simply refreshing the page should resolve the issue. This may have stemmed from experimentation with a new UI library, will stick with other tried and true libraries in the future.
 
 First, install all required dependencies.
 ```bash

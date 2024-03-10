@@ -77,7 +77,7 @@ export default function Home() {
 			
 	return (
 		<main 
-			className="bg-[#1A1A1A] relative flex flex-col gap-2 min-h-screen min-w-screen flex-col py-24 px-48 transition duration-300 ease-in-out"
+			className="bg-[#1A1A1A] relative flex flex-col gap-2 min-h-screen min-w-screen flex-col py-24 px-12 sm:px-48 transition duration-300 ease-in-out"
 		>
 			<div className="font-semibold text-lg tracking-wider">
 				Gift Redemption System

@@ -13,7 +13,7 @@ interface GetStaffFromStaffIdRequest {
 
 const getStaffBySearchPaginated = async (data: GetStaffBySearchPaginatedRequest) => {
     const { search, page, pageSize } = data;
- 
+
     const staff = await prisma.staff.findMany({
         where: {
             id: {

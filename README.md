@@ -2,6 +2,8 @@
 ## About The Project
 This project is the take-home assignment for gds-swe-supplyally-govwallet.
 
+![Screenshot](https://github.com/st-muel/gds-intern-assignment/blob/main/public/screenshot.png)
+
 [Live Demo](https://gds-intern-assignment.vercel.app/) hosted on [Vercel][Vercel-url].
 
 ## Built With

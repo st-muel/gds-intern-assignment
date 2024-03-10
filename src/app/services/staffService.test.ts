@@ -38,7 +38,7 @@ describe('staffService: getStaffFromStaffId', () => {
 
 describe("staffService: getStaffBySearchPaginated", () =>{
 	test('getStaffBySearchPaginated should return the first 10 staff and total count', async () => {
-		// Create 10 staff members
+		// Create staff members
 		const staff = Array.from({ length: 20 }, (_, i) => ({
 			id: `STAFF_H123804820F${i}`,
 			teamName: `Team ${i}`,
@@ -56,7 +56,7 @@ describe("staffService: getStaffBySearchPaginated", () =>{
 
 describe("staffService: getStaffBySearchPaginated", () =>{
 	test('getStaffBySearchPaginated should return page 2 of the staff and total count', async () => {
-		// Create 10 staff members
+		// Create staff members
 		const staff = Array.from({ length: 30 }, (_, i) => ({
 			id: `STAFF_H123804820F${i}`,
 			teamName: `Team ${i}`,
@@ -74,7 +74,7 @@ describe("staffService: getStaffBySearchPaginated", () =>{
 
 describe("staffService: getStaffBySearchPaginated", () => {
 	test('getStaffBySearchPaginated should return an empty array when search yields no results', async () => {
-		// Create 10 staff members
+		// Create staff members
 		const staff = Array.from({ length: 20 }, (_, i) => ({
 			id: `STAFF_H123804820F${i}`,
 			teamName: `Team ${i}`,

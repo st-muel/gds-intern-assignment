@@ -8,7 +8,7 @@ import type { StaffWithTeamAndRedemptions } from "../../../types";
 
 interface props {
     item: StaffWithTeamAndRedemptions;
-    fetchStaff: () => void;
+    fetchStaffPage: () => void;
 }
 
 export const RedeemChip = (props: props) => {
@@ -25,7 +25,7 @@ export const RedeemChip = (props: props) => {
 			});
 
             // Refresh the staff table
-            props.fetchStaff();
+            props.fetchStaffPage();
 
 			toast.success(
 				`Gift redeemed successfully for team ${res.data.redemption.team.name}! Merry Christmas!`

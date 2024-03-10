@@ -7,7 +7,7 @@ import type { StaffWithTeamAndRedemptions } from "../../../types";
 
 interface props {
 	items: StaffWithTeamAndRedemptions[];
-	fetchStaff: () => void;
+	fetchStaffPage: () => void;
 }
 
 interface Column {
@@ -57,7 +57,7 @@ export const StaffTable = (props: props) => {
 				return (
 					<RedeemChip
 						item={item} 
-						fetchStaff={props.fetchStaff}
+						fetchStaffPage={props.fetchStaffPage}
 					/>
 				);
 			default:

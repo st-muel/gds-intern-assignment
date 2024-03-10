@@ -22,6 +22,7 @@ export default function Home() {
 
 	const [totalPages, setTotalPages] = useState(0);
 	const [currentPage, setCurrentPage] = useState(1);
+	const [pageLoading, setPageLoading] = useState(false);
 	const [initialLoad, setInitialLoad] = useState(true);
 	const [staff, setStaff] = useState<StaffWithTeamAndRedemptions[]>([]);
 
@@ -44,8 +45,9 @@ export default function Home() {
 		}
 	}
 
-	const fetchStaff = async () => {
+	const fetchStaffPage = async () => {
 		try {
+			setPageLoading(true);
 			const res = await axios.get<GetStaffBySearchPaginatedResponse>('/api/staff', {
 				params: {
 					search: debouncedSearch,
@@ -59,12 +61,13 @@ export default function Home() {
 		} catch (error: AxiosError | any) {
 			toast.error('Error: ' + error.response.data);
 		} finally {
-			setInitialLoad(false);
+			if (initialLoad) setInitialLoad(false);
+			setPageLoading(false);
 		}
 	}
 
 	useEffect(() => {
-		fetchStaff();
+		fetchStaffPage();
 	}, [currentPage])
 
 	useEffect(() => {
@@ -89,7 +92,7 @@ export default function Home() {
 					items={
 						autoCompleteItems.length == 1 ? autoCompleteItems : staff
 					}
-					fetchStaff={fetchStaff}
+					fetchStaffPage={fetchStaffPage}
 				/>
 				{ initialLoad && (
 					<div className="flex justify-center pt-12">
@@ -98,11 +101,17 @@ export default function Home() {
 				
 				)}
 				{ !initialLoad && autoCompleteItems.length != 1 && (
-					<Pagination 
-						total={totalPages}
-						page={currentPage}
-						onChange={(page) => setCurrentPage(page)}
-					/>
+					<div className="flex gap-2">
+						<Pagination
+							total={totalPages}
+							page={currentPage}
+							onChange={(page) => setCurrentPage(page)}
+							isDisabled={pageLoading}
+						/>
+						{ pageLoading && (
+							<Spinner size="sm" />
+						)}
+					</div>
 				)}
 			</div>
 		</main>

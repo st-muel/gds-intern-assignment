@@ -10,6 +10,8 @@ export default function Home() {
 	const [staffPassId, setStaffPassId] = useState('');
 
 	const tryRedeemGift = async () => {
+		if (!staffPassId) return;
+
 		try {
 			setLoading(true);
 
@@ -27,6 +29,12 @@ export default function Home() {
 		}
 	}
 
+	const checkForEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Enter') {
+			tryRedeemGift();
+		}
+	}
+
 	return (
 		<main className="flex flex-col gap-6 min-h-screen flex-col items-center justify-center p-24 bg-[#51829B]">
 			<div className="font-bold text-5xl tracking-wider">
@@ -40,6 +48,7 @@ export default function Home() {
 						className="py-6 px-3 bg-[#F5F5F5] text-gray-700 text-xl rounded-sm h-10"
 						value={staffPassId}
 						onChange={e => setStaffPassId(e.target.value)}
+						onKeyDown={checkForEnter}
 					/>
 				</div>
 				<button 

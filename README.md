@@ -1,7 +1,8 @@
-> .env file has been commit ONLY FOR ASSIGNMENT PURPOSES. Considered including an .env.example file instead, but would have just been the same as including the .env file just with an extra step. WOULD NEVER DO THIS IN ACTUAL PROJECTS.
 
 ## About The Project
-This project is the take-home assignment for gds-swe-supplyally-govwallet. It is also mobile responsive!
+This project is the take-home assignment for gds-swe-supplyally-govwallet.
+
+[Live Demo](https://gds-intern-assignment.vercel.app/) hosted on [Vercel][Vercel-url].
 
 ## Built With
 
@@ -10,6 +11,11 @@ This project is the take-home assignment for gds-swe-supplyally-govwallet. It is
 * [![Prisma][Prisma]][Prisma-url]
 * [![Vitest][Vitest]][Vitest-url]
 
+## Hosted With
+
+* [![Vercel][Vercel]][Vercel-url]
+* [![Neon][Neon]][Neon-url]
+
 ## Getting Started
 
 First, install all required dependencies.
@@ -17,7 +23,8 @@ First, install all required dependencies.
 pnpm install
 ```
 
-Then, create and seed the local database. (A local database was used for this assignment due to difficulties providing a secure env file, but it could easily be hosted using services like [Planetscale](https://planetscale.com/]))
+Next, if running locally, rename `.env.example` to `.env`.
+Then, create and seed the local database. (A [NeonDb][Neon-url] database was used for the deployment)
 ```bash
 pnpm prisma migrate dev
 ```
@@ -28,7 +35,7 @@ Finally, run the development server:
 pnpm dev
 ```
 
-The project can be accessed at [http://localhost:3000](http://localhost:3000)!
+The local project can be accessed at [http://localhost:3000](http://localhost:3000)!
 
 ## Testing
 
@@ -54,3 +61,7 @@ pnpm prisma db push --force-reset && pnpm prisma db seed
 [Prisma-url]: https://www.prisma.io/
 [Vitest]: https://img.shields.io/badge/-Vitest-%252529?style=for-the-badge&logo=vitest&logoColor=white
 [Vitest-url]: https://vitest.dev/
+[Vercel]: https://img.shields.io/badge/Vercel-black?style=flat&logo=Vercel&logoColor=white
+[Vercel-url]: https://vercel.com/
+[Neon]: https://neon.tech/_next/static/svgs/e9de8fc7653111a1423e0d227c0c5e9f.svg
+[Neon-url]: https://neon.tech/

@@ -17,7 +17,7 @@ interface Column {
 
 const columns: Column[] = [
 	{ uid: "id", name: "ID" },
-	{ uid: "role", name: "Role" },
+	{ uid: "team", name: "Team" },
 	{ uid: "status", name: "Status" }
 ];
 
@@ -40,7 +40,7 @@ export const StaffTable = (props: props) => {
 						{ item.id }
 					</User>
 				);
-			case "role":
+			case "team":
 				return (
 					<div className="flex flex-col">
 						<p className="text-bold text-sm capitalize">

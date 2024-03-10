@@ -6,10 +6,10 @@ import { toast } from "sonner";
 import { SearchBar } from "./components/SearchBar"
 import { useDebounce } from 'use-debounce';
 import { StaffTable } from "./components/StaffTable";
+import { Pagination, Spinner } from "@nextui-org/react";
 
 import type { StaffWithTeamAndRedemptions } from "../../types";
 import type { GetStaffBySearchPaginatedResponse } from "./api/staff/route";
-import { Pagination } from "@nextui-org/react";
 
 const PAGE_SIZE = 10;
 
@@ -91,6 +91,12 @@ export default function Home() {
 					}
 					fetchStaff={fetchStaff}
 				/>
+				{ initialLoad && (
+					<div className="flex justify-center pt-12">
+						<Spinner size="lg" />
+					</div>
+				
+				)}
 				{ !initialLoad && autoCompleteItems.length != 1 && (
 					<Pagination 
 						total={totalPages}

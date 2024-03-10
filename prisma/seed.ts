@@ -19,12 +19,17 @@ async function main() {
 			const data = fs.readFileSync(filePath, 'utf8');
 			
 			const lines = data.split('\n');
+			
+			const teamsFound = new Set<string>();
+			const teamTransactions = [];
 			for (let i = 1; i < lines.length; i++) {
 				const values = lines[i].trim().split(',');
-				
 				const [staffId, teamName, createdAt] = values;
+
+				if (teamsFound.has(teamName)) continue;
 				
-				const team = await prisma.team.upsert({
+				teamsFound.add(teamName);
+				teamTransactions.push(prisma.team.upsert({
 					where: {
 						name: teamName
 					},
@@ -32,10 +37,21 @@ async function main() {
 					create: {
 						name: teamName
 					}
-				})
+				}));
+			}
+	
+			const teams = await prisma.$transaction(teamTransactions);
+		
+			const staffTransactions = [];
+			for (let i = 1; i < lines.length; i++) {
+				const values = lines[i].trim().split(',');
+				const [staffId, teamName, createdAt] = values;
+
+				const team = teams.find(t => t.name === teamName);
+				if (!team) throw new Error('Team not found');
 
 				// Create the staff member
-				await prisma.staff.upsert({
+				staffTransactions.push(prisma.staff.upsert({
 					where: {
 						id: staffId
 					},
@@ -48,8 +64,10 @@ async function main() {
 						teamId: team.id,
 						createdAt: parseInt(createdAt)
 					}
-				});
+				}));
 			}
+
+			await prisma.$transaction(staffTransactions);
 		}
 	});
 }
